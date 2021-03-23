@@ -18,7 +18,7 @@ public class Proyecto_Giordan_Lizardo {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        File fichero = new File("E:\\M03_Programacion\\Proyecto_Gio_Liz\\GitKrakenProject_Gio_Liz\\Aulas\\clasroom.txt");
+        File fichero = new File("..\\Aulas\\clasroom.txt");
         
         try {
             // Codificación ISO-8859-1 (ANSI) o UTF-8 dependiendo de cómo esté creado el fichero de texto
