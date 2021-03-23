@@ -14,12 +14,14 @@ import java.util.Scanner;
  */
 public class Proyecto_Giordan_Lizardo {
 
-    /**
-     * @param args the command line arguments
-     */
+    static File fichero = new File("..\\Aulas\\clasroom.txt");
     public static void main(String[] args) {
-        File fichero = new File("..\\Aulas\\clasroom.txt");
+    
+    leerFichero(fichero);   
         
+    }
+
+    private static void leerFichero(File fichero) {
         try {
             // Codificación ISO-8859-1 (ANSI) o UTF-8 dependiendo de cómo esté creado el fichero de texto
             Scanner lectorFichero = new Scanner(fichero, "ISO-8859-1");
