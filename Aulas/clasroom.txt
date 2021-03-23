@@ -1,10 +1,14 @@
-A01 , Ordenadores
-A02 , Reuniones
-A03 , Ciencia
-A04 , Historia
-A05 , 
-A06
-A07
-A08
-A09
-A10
+Or14 , Ordinadors 04 , 25 ,si,5, si, no
+Or15 , Ordinadors 04 , 25 ,si,5, si, no
+Or16 , Ordinadors 04 , 25 ,si,5, si, no
+Or27 , Ordinadors 04 , 25 ,si,5, si, no
+Or28 , Ordinadors 04 , 25 ,si,5, si, no
+Or29 , Ordinadors 04 , 25 ,si,5, si, no
+Or40 , Ordinadors 04 , 25 ,si,5, si, no
+Or41 , Ordinadors 04 , 25 ,si,5, si, no
+Or42 , Ordinadors 04 , 25 ,si,5, si, no
+Or23 , Ordinadors 04 , 25 ,si,5, si, no
+Or10 , Ordinadors 04 , 25 ,si,5, si, no
+Or13 , Ordinadors 04 , 25 ,si,5, si, no
+Or43 , Ordinadors 04 , 25 ,si,5, si, no
+Or33 , Ordinadors 04 , 25 ,si,5, si, no
