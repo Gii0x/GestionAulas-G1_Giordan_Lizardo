@@ -7,7 +7,8 @@ package proyecto_giordan_lizardo;
 
 import java.io.File;
 import java.util.Scanner;
-
+import java.util.ArrayList;
+import java.io.FileWriter;
 /**
  *
  * @author Gii0
@@ -16,11 +17,32 @@ public class Proyecto_Giordan_Lizardo {
 
     static File fichero = new File("..\\Aulas\\clasroom.txt");
     public static void main(String[] args) {
-    
+    Scanner lector=new Scanner(System.in);
     String [][] clases = new String[14][7];
         
     ImprimirDatosFichero(fichero);   
     
+    System.out.println("Opcion a realizar como profesor");
+        int opcion=lector.nextInt();
+         switch(opcion){
+            case 1:
+                System.out.println("Opcion de Crear un fichero");
+                crearFichero(fichero);
+                break;
+            case 2:
+                System.out.println("Opcion de Añadir lineas en el fichero");
+                añadirLineasFichero(fichero);
+                break;
+            case 3:
+                System.out.println("Opcion de Eliminar lineas en el fichero");
+                eliminarLineaFichero(fichero);
+                break;
+            case 4:
+                System.out.println("Opcion de Actualizar linea en el fichero");
+                actualizarLineaFichero(fichero);
+                break;
+            default:
+        }
     }
     /**
      * Generamos una funcion que lee el fichero pasado por parametro e imprime los datos de las aulas.
@@ -56,36 +78,7 @@ public class Proyecto_Giordan_Lizardo {
             System.out.println("Ha ocurrido un error al abrir/leer el fichero");
         }
     }
-    
-}
-    public static void main(String[] args) {
-        Scanner lector=new Scanner(System.in);
-        System.out.println("Opcion a realizar como profesor");
-        int opcion=lector.nextInt();
-        switch(opcion){
-            case 1:
-                System.out.println("Opcion de Crear un fichero");
-                crearFichero();
-                break;
-            case 2:
-                System.out.println("Opcion de Añadir lineas en el fichero");
-                añadirLineasFichero();
-                break;
-            case 3:
-                System.out.println("Opcion de Eliminar lineas en el fichero");
-                eliminarLineaFichero();
-                break;
-            case 4:
-                System.out.println("Opcion de Actualizar linea en el fichero");
-                actualizarLineaFichero();
-                break;
-            default:
-        }     
-        //investigar el metodo split de la clase string
-    }
-
-    private static void crearFichero() {
-        File fichero = new File("/Test/nuevo4.txt");
+    private static void crearFichero(File fichero) {
         
         try {
             FileWriter writer = new FileWriter(fichero);
@@ -99,9 +92,7 @@ public class Proyecto_Giordan_Lizardo {
             System.out.println("Ha ocurrido un error al crear/escribir en el fichero");
         }
     }
-
-    private static void añadirLineasFichero() {
-        File fichero = new File("/Test/nuevo4.txt");
+    private static void añadirLineasFichero(File fichero) {
         
         try {
             FileWriter writer = new FileWriter(fichero,true);
@@ -114,11 +105,9 @@ public class Proyecto_Giordan_Lizardo {
         } catch (Exception e) {
             System.out.println("Ha ocurrido un error al crear/escribir en el fichero");
         }
-    }
-
-    private static void eliminarLineaFichero() {
-        File fichero = new File("C:/Test/nuevo.txt");
-        
+}
+    private static void eliminarLineaFichero(File fichero) {
+       
         // Array para guardar todas las líneas leídas del fichero
         ArrayList<String> lineas = new ArrayList<>();
         
@@ -154,8 +143,8 @@ public class Proyecto_Giordan_Lizardo {
         }
     }
 
-    private static void actualizarLineaFichero() {
-        File fichero = new File("C:/Test/nuevo.txt");
+    private static void actualizarLineaFichero(File fichero) {
+        
         
         // Array para guardar todas las líneas leídas del fichero
         ArrayList<String> lineas = new ArrayList<>();
