@@ -17,8 +17,6 @@ public class Proyecto_Giordan_Lizardo {
     static Scanner lector = new Scanner(System.in);
     static File fichero = new File("..\\Aulas\\clasroom.txt");
     public static void main(String[] args) {
-    Scanner lector=new Scanner(System.in);
-    String [][] clases = new String[14][7];
         
     ImprimirDatosFichero(fichero);   
     
@@ -101,8 +99,6 @@ public class Proyecto_Giordan_Lizardo {
             System.out.print(datos[x]);
             array[i]=lector.next();
         }
-        
-        String linea = "";
         //Finalmente añadimos el array por partes al documento con el complemento WRITER.
         try {
             
@@ -114,6 +110,7 @@ public class Proyecto_Giordan_Lizardo {
             System.out.println("Ha ocurrido un error al crear/escribir en el fichero");
         }
 }
+    
     private static void eliminarLineaFichero(File fichero) {
        
         // Array para guardar todas las líneas leídas del fichero
@@ -123,7 +120,6 @@ public class Proyecto_Giordan_Lizardo {
         try {
             Scanner lectorFichero = new Scanner(fichero);
             
-            int i=0;
             
             while(lectorFichero.hasNext()) {
                 lineas.add(lectorFichero.nextLine());
@@ -136,6 +132,7 @@ public class Proyecto_Giordan_Lizardo {
         
         // Abrimos el fichero de texto para sobreescribirlo
         // Eliminaremos la línea 3
+        
         try {
             FileWriter writer = new FileWriter(fichero);
             
@@ -144,7 +141,6 @@ public class Proyecto_Giordan_Lizardo {
                     writer.write(linea + "\n");
                 }
             }
-            
             writer.close();
         } catch (Exception e) {
             System.out.println("Ha ocurrido un error al abrir/sobreescribir el fichero");
@@ -161,7 +157,7 @@ public class Proyecto_Giordan_Lizardo {
         try {
             Scanner lectorFichero = new Scanner(fichero);
             
-            int i=0;
+            
             
             while(lectorFichero.hasNext()) {
                 lineas.add(lectorFichero.nextLine());
