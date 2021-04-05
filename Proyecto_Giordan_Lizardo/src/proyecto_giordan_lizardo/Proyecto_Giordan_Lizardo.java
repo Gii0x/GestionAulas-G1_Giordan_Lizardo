@@ -14,7 +14,7 @@ import java.io.FileWriter;
  * @author Gii0
  */
 public class Proyecto_Giordan_Lizardo {
-
+    static Scanner lector = new Scanner(System.in);
     static File fichero = new File("..\\Aulas\\clasroom.txt");
     public static void main(String[] args) {
     Scanner lector=new Scanner(System.in);
@@ -22,27 +22,8 @@ public class Proyecto_Giordan_Lizardo {
         
     ImprimirDatosFichero(fichero);   
     
-    System.out.println("Opcion a realizar como profesor");
-        int opcion=lector.nextInt();
-         switch(opcion){
-            case 1:
-                System.out.println("Opcion de Crear un fichero");
-                crearFichero(fichero);
-                break;
-            case 2:
-                System.out.println("Opcion de Añadir lineas en el fichero");
-                añadirLineasFichero(fichero);
-                break;
-            case 3:
-                System.out.println("Opcion de Eliminar lineas en el fichero");
-                eliminarLineaFichero(fichero);
-                break;
-            case 4:
-                System.out.println("Opcion de Actualizar linea en el fichero");
-                actualizarLineaFichero(fichero);
-                break;
-            default:
-        }
+    MenuOpcionesProfessor(fichero);
+    
     }
     /**
      * Generamos una funcion que lee el fichero pasado por parametro e imprime los datos de las aulas.
@@ -60,6 +41,7 @@ public class Proyecto_Giordan_Lizardo {
                 System.out.println("");
                 linea=lectorFichero.nextLine();
                 //Utilizamos el metodo Split para recoger los datos del fichero txt.
+                
                 String [] parts = linea.split(",");
                 aula= parts[0];
                 descripcion = parts[1];
@@ -77,8 +59,11 @@ public class Proyecto_Giordan_Lizardo {
         } catch (Exception e) {
             System.out.println("Ha ocurrido un error al abrir/leer el fichero");
         }
+             System.out.println("");   
     }
-    private static void crearFichero(File fichero) {
+    
+    /**
+    private static void ResetearFichero(File fichero) {
         
         try {
             FileWriter writer = new FileWriter(fichero);
@@ -92,15 +77,38 @@ public class Proyecto_Giordan_Lizardo {
             System.out.println("Ha ocurrido un error al crear/escribir en el fichero");
         }
     }
+    */
+    
+    /**
+     * Funcion que se encarga de añadir una linea adición al fichero clasroom
+     * @param fichero 
+     */
     private static void añadirLineasFichero(File fichero) {
+        //Generamos 2 arrays uno para almacenar la respuesta del usuario
+        //Y otro para imnprimir datos por pantalla.
+        String [] array = new String [7];
+        String [] datos = new String [7];
+        datos[0]="Aula (Or**) = ";
+        datos[1]="Descripción = ";
+        datos[2]="Capacidad = ";
+        datos[3]="PC (Si/No)= ";
+        datos[4]="Numero de PCs = ";
+        datos[5]="Proyector (Si/No) = ";
+        datos[6]="Insonorización (Si/No) = ";
         
+        //Con el siguiente bucle almacenamos datos en Array e imprimimos por pantalla el dato que solicitamos.
+        for(int i=0, x=0;i<array.length;i++,x++){
+            System.out.print(datos[x]);
+            array[i]=lector.next();
+        }
+        
+        String linea = "";
+        //Finalmente añadimos el array por partes al documento con el complemento WRITER.
         try {
+            
             FileWriter writer = new FileWriter(fichero,true);
-            
-            writer.write("Línea 1\n");
-            writer.write("Línea 2\n");
-            writer.write("Línea 3\n");
-            
+       
+                writer.write("\n"+array[0]+","+array[1]+","+array[2]+","+array[3]+","+array[4]+","+array[5]+","+array[6]);
             writer.close();
         } catch (Exception e) {
             System.out.println("Ha ocurrido un error al crear/escribir en el fichero");
@@ -180,6 +188,37 @@ public class Proyecto_Giordan_Lizardo {
             writer.close();
         } catch (Exception e) {
             System.out.println("Ha ocurrido un error al abrir/sobreescribir el fichero");
+        }
+    }
+
+    private static void MenuOpcionesProfessor(File fichero) {
+        
+        System.out.println("Como Professor indica que acción desea realizar:");
+        System.out.print("\t1. Crear un nuevo registro.\n"
+                + "\t2. Modificar un registro.\n"
+                + "\t3. Eliminiar un registro.\n"
+                + "\t0. Salir \n---->");
+        int opcion=lector.nextInt();
+         switch(opcion){
+            /* case 1:
+                System.out.println("Opcion de Crear un fichero");
+                ResetearFichero(fichero);
+                break;
+             */
+            case 1:
+                System.out.println("Opcion de Añadir lineas en el fichero");
+                añadirLineasFichero(fichero);
+                break;
+            case 2:
+                System.out.println("Opcion de Actualizar linea en el fichero");
+                actualizarLineaFichero(fichero);
+                break;
+            case 3:
+               
+                System.out.println("Opcion de Eliminar lineas en el fichero");
+                eliminarLineaFichero(fichero);
+                break;
+            default:
         }
     }
     
