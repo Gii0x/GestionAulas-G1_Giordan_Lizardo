@@ -155,6 +155,33 @@ public class Proyecto_Giordan_Lizardo {
     }
 
     private static void actualizarLineaFichero(File fichero) {
+        // Se añadió un lector dentro de esta función 
+        //para que no surja problemas al momento de solicitar los datos.
+        Scanner lector2 = new Scanner(System.in);
+        //Se crea la variable aula dentro de esta funcion.
+        String aula="";
+        //Se le indica al usurario El " codigo " de aula.
+        System.out.println("Indiqueme que aula deseas modificar (Or**): ");
+        aula=lector2.nextLine(); // Se recoge los datos por teclado
+        System.out.println(aula);// Se imprime los datos ingresados por teclado
+        
+        String[] array = new String[6];//[7]
+        String[] datos = new String[6];//[7]
+        
+        //Generamos 2 arrays uno para almacenar la respuesta del usuario
+        //Y otro para imnprimir datos por pantalla.
+        //datos[0] = "Aula (Or**) = ";
+        datos[0] = "Descripción = ";
+        datos[1] = "Capacidad = ";
+        datos[2] = "PC (Si/No)= ";
+        datos[3] = "Numero de PCs = ";
+        datos[4] = "Proyector (Si/No) = ";
+        datos[5] = "Insonorización (Si/No) = ";
+        
+        for (int i = 0, x = 0; i < array.length; i++, x++) {
+            System.out.print(datos[x]);
+            array[i] = lector.next();
+        }
 
         // Array para guardar todas las líneas leídas del fichero
         ArrayList<String> lineas = new ArrayList<>();
@@ -178,8 +205,8 @@ public class Proyecto_Giordan_Lizardo {
             FileWriter writer = new FileWriter(fichero);
 
             for (String linea : lineas) {
-                if ("Línea 4".equals(linea)) {
-                    writer.write("Nueva Línea 4\n");
+                if (linea.split(",")[0].equals (aula)) {
+                    writer.write(  aula+"," + array[0] + "," + array[1] + "," + array[2] + "," + array[3] + "," + array[4] + "," + array[5] + "\n");
                 } else {
                     writer.write(linea + "\n");
                 }
