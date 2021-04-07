@@ -112,13 +112,20 @@ public class Proyecto_Giordan_Lizardo {
             System.out.println("Ha ocurrido un error al crear/escribir en el fichero");
         }
     }
-
-    private static void eliminarLineaFichero(File fichero) {
+    
+        /**
+         * Funcion encargada de eliminar una linea de registros tomando como referencia el aula.
+         * @param fichero 
+         */
+        private static void eliminarLineaFichero(File fichero) {
+            
+        //Solicitamos el aula de la cual desea eliminar toda la linea de registro.
         String aula="";
+        Scanner lector1 = new Scanner (System.in);
         System.out.println("Indiqueme que aula desea eliminar (Or**): ");
-        aula=lector.nextLine();
-        lector.next();
-        System.out.println(aula);
+        aula=lector1.nextLine();
+        
+        
         // Array para guardar todas las líneas leídas del fichero
         ArrayList<String> lineas = new ArrayList<>();
 
@@ -127,6 +134,7 @@ public class Proyecto_Giordan_Lizardo {
             Scanner lectorFichero = new Scanner(fichero);
 
             while (lectorFichero.hasNext()) {
+                //añade las lineas del fichero al Arraylist.
                 lineas.add(lectorFichero.nextLine());
             }
 
@@ -136,18 +144,24 @@ public class Proyecto_Giordan_Lizardo {
         }
 
         // Abrimos el fichero de texto para sobreescribirlo
-        // Eliminaremos la línea 3
+        // Eliminaremos el linea solicitada por el profesor utilizando el aula como referencia.
         try {
             FileWriter writer = new FileWriter(fichero);
             
+            /**En el siguiente bucle en la cual tenemos una condición indicamos que si el split almacenado con la posición 0 es diferente al aula indicada por el profesor
+            este retornara un TRUE y realizara la escritura sobre el fichero introduciendo la linea que toque y luego dando un "Enter" (\n).
+            Si por lo contrario la condición retornase un FALSE este no imprimir la linea que le toca en el archivo y quedaria eliminada.
+            Luego devolveria el mensaje que aparece en el ELSE.
+            */
             for (String linea : lineas) {
-                if(!linea.split(",")[0].equals (aula)){
+                if(linea.split(",")[0].equals(aula)){
+                    System.out.println("Los registros del Aula "+aula+" han sido borrados correctamente");
+                    
+                }else if (!linea.split(",")[0].equals(aula)){
                     writer.write(linea + "\n");
-                }else {
-                    System.out.println("El aula indicada no existe.");
-                }
+                    }
             }
-
+            
             writer.close();
         } catch (Exception e) {
             System.out.println("Ha ocurrido un error al abrir/sobreescribir el fichero");
