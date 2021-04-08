@@ -6,9 +6,13 @@
 package proyecto_giordan_lizardo;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.FileWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  *
@@ -18,7 +22,8 @@ public class Proyecto_Giordan_Lizardo {
 
     static Scanner lector = new Scanner(System.in);
     static File fichero = new File("..\\Aulas\\clasroom.txt");
-
+    static int max=5;
+    
     public static void main(String[] args) {
 
         ImprimirDatosFichero(fichero);
@@ -231,9 +236,66 @@ public class Proyecto_Giordan_Lizardo {
             System.out.println("Ha ocurrido un error al abrir/sobreescribir el fichero");
         }
     }
+    public static void FicheroBinario(){
+        int usr=1;
+        System.out.println("AÑADIR USUARIO : ");
+        usr++;
+        try{
+            ObjectOutputStream fichero= new ObjectOutputStream(new FileOutputStream("users.dat"));
+            
+            Usuarios[]personal=new Usuarios[usr];
+            
+            System.out.println("Introduzca datos del siguiente Empleado");
+            //for(int i=0;i<personal.length;i++){
+            
+                if(personal[i]== null){
+                
+                    personal[i]=new Usuarios();
+                    System.out.print("Rol : ");
+                    personal[i].Rol=lector.nextLine();
+                    System.out.print("Nombre : ");
+                    personal[i].Nombre=lector.nextLine();
+                    System.out.print("Id Usuario : ");
+                    personal[i].IdUsuario=lector.nextLine();
+                    System.out.print("Contraseña : ");
+                    personal[i].Contraseña=lector.nextLine();
+                }
+            
+                
+            //}
+            fichero.writeObject(personal);
+                
+                fichero.close();
+        }catch(Exception e){
+            System.out.println("Ha ocurrido un error al crear/guardar el fichero");
+        }
+        
+        try{
+            ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("users.dat"));
+            
+            
+            Usuarios[]personal=(Usuarios[])fichero.readObject();
+            
+            for(Usuarios empleados: personal){
+                if(empleados !=null){
+                System.out.println("Nombre : "+empleados.Nombre);
+                System.out.println("Rol : "+empleados.Rol);
+                System.out.println("ID Usuario : "+empleados.IdUsuario);
+                System.out.println("Contraseña : "+empleados.Contraseña);
+                System.out.println("--------------------------");
+                }
+           }
+            // se cierra el fichero para liberar recursos
+            fichero.close();
+        }catch(Exception e){
+            System.out.println("Ha ocurrido un error al abrir/leer el fichero");
+        }
+    }
 
     private static void MenuOpcionesProfessor(File fichero) {
 
+        FicheroBinario();
+        
         System.out.println("Como Professor indica que acción desea realizar:");
         System.out.print("\t1. Crear un nuevo registro.\n"
                 + "\t2. Modificar un registro.\n"
