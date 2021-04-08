@@ -22,14 +22,14 @@ public class Proyecto_Giordan_Lizardo {
 
     static Scanner lector = new Scanner(System.in);
     static File fichero = new File("..\\Aulas\\clasroom.txt");
-    static int max=5;
+    static int MAX=5;
     
     public static void main(String[] args) {
 
-        ImprimirDatosFichero(fichero);
-
+        
+        MenuAdmin();    
         MenuOpcionesProfessor(fichero);
-
+        
     }
 
     /**
@@ -237,17 +237,27 @@ public class Proyecto_Giordan_Lizardo {
         }
     }
     public static void FicheroBinario(){
-        int usr=1;
-        System.out.println("AÑADIR USUARIO : ");
-        usr++;
+        
         try{
             ObjectOutputStream fichero= new ObjectOutputStream(new FileOutputStream("users.dat"));
             
-            Usuarios[]personal=new Usuarios[usr];
+            Usuarios[]personal=new Usuarios[MAX];
             
             System.out.println("Introduzca datos del siguiente Empleado");
             //for(int i=0;i<personal.length;i++){
             
+                    personal[0]=new Usuarios();
+                    
+                    personal[0].Rol= "Admin";
+                    
+                    personal[0].Nombre="Admin";
+                    
+                    personal[0].IdUsuario="Admin";
+                    
+                    personal[0].Contraseña="Admin";
+            int i=1;
+            while(i<personal.length){
+
                 if(personal[i]== null){
                 
                     personal[i]=new Usuarios();
@@ -260,8 +270,9 @@ public class Proyecto_Giordan_Lizardo {
                     System.out.print("Contraseña : ");
                     personal[i].Contraseña=lector.nextLine();
                 }
+                i++;
             
-                
+            }
             //}
             fichero.writeObject(personal);
                 
@@ -270,6 +281,73 @@ public class Proyecto_Giordan_Lizardo {
             System.out.println("Ha ocurrido un error al crear/guardar el fichero");
         }
         
+        
+    }
+
+    private static void MenuOpcionesProfessor(File fichero) {
+
+        System.out.println("---------- MENÚ PROFESOR ----------");
+        System.out.print("\t1. Crear un nuevo registro.\n"
+                + "\t2. Modificar un registro.\n"
+                + "\t3. Eliminiar un registro.\n"
+                + "\t4. Listar registros.\n"
+                + "\t0. Salir \n---->");
+        int opcion = lector.nextInt();
+        switch (opcion) {
+            /* case 1:
+                System.out.println("Opcion de Crear un fichero");
+                ResetearFichero(fichero);
+                break;
+             */
+            case 1:
+                System.out.println("Opcion de Añadir lineas en el fichero");
+                añadirLineasFichero(fichero);
+                break;
+            case 2:
+                System.out.println("Opcion de Actualizar linea en el fichero");
+                actualizarLineaFichero(fichero);
+                break;
+            case 3:
+
+                System.out.println("Opcion de Eliminar lineas en el fichero");
+                eliminarLineaFichero(fichero);
+                break;
+            case 4:
+                ImprimirDatosFichero(fichero);
+                break;
+            default:
+        }
+    }
+
+    private static void MenuAdmin() {
+        int opcion=0;
+        
+        System.out.println("---------- MENÚ ADMIN ----------");
+        System.out.println("¿Que acción deseas realizar?");
+        System.out.println("1. Crear un usuario\n"
+                + "2.Listar\n"
+                + "3.Modificar\n"
+                + "0.Salir");
+        opcion=lector.nextInt();
+        
+        switch(opcion){
+            case 1:
+                FicheroBinario();
+                break;
+            case 2:
+                ListarUsuarios();
+                break;
+            case 3:
+                ModificarUsuarios();
+                break;
+            case 0:
+                break;
+            
+        }
+        
+    }
+
+    private static void ListarUsuarios() {
         try{
             ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("users.dat"));
             
@@ -292,37 +370,8 @@ public class Proyecto_Giordan_Lizardo {
         }
     }
 
-    private static void MenuOpcionesProfessor(File fichero) {
-
-        FicheroBinario();
-        
-        System.out.println("Como Professor indica que acción desea realizar:");
-        System.out.print("\t1. Crear un nuevo registro.\n"
-                + "\t2. Modificar un registro.\n"
-                + "\t3. Eliminiar un registro.\n"
-                + "\t0. Salir \n---->");
-        int opcion = lector.nextInt();
-        switch (opcion) {
-            /* case 1:
-                System.out.println("Opcion de Crear un fichero");
-                ResetearFichero(fichero);
-                break;
-             */
-            case 1:
-                System.out.println("Opcion de Añadir lineas en el fichero");
-                añadirLineasFichero(fichero);
-                break;
-            case 2:
-                System.out.println("Opcion de Actualizar linea en el fichero");
-                actualizarLineaFichero(fichero);
-                break;
-            case 3:
-
-                System.out.println("Opcion de Eliminar lineas en el fichero");
-                eliminarLineaFichero(fichero);
-                break;
-            default:
-        }
+    private static void ModificarUsuarios() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
