@@ -22,12 +22,12 @@ public class Proyecto_Giordan_Lizardo {
 
     static Scanner lector = new Scanner(System.in);
     static File fichero = new File("..\\Aulas\\clasroom.txt");
-    static int MAX=5;
+    static int MAX=7;
     
     public static void main(String[] args) {
 
-        Login();
-        //MenuAdmin();    
+        //Login();
+        MenuAdmin();    
         //MenuOpcionesProfessor(fichero);
         
     }
@@ -236,16 +236,27 @@ public class Proyecto_Giordan_Lizardo {
             System.out.println("Ha ocurrido un error al abrir/sobreescribir el fichero");
         }
     }
-    public static void FicheroBinario(){
-        
+    
+    /**
+     * 
+     */
+    
+    public static void CrearUsuario(){
+            Usuarios[]personal=null;
+            
+        // Lectura de archivo
         try{
-            ObjectOutputStream fichero= new ObjectOutputStream(new FileOutputStream("users.dat"));
+            ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("users.dat"));
             
-            Usuarios[]personal=new Usuarios[MAX];
-            
-            System.out.println("Introduzca datos del siguiente Empleado");
-            //for(int i=0;i<personal.length;i++){
-            
+            personal = (Usuarios[]) fichero.readObject();
+            fichero.close();
+        }catch(Exception e){
+            System.out.println("Ha ocurrido un error al crear/guardar el fichero");
+        }
+        
+        
+           
+
                     personal[0]=new Usuarios();
                     
                     personal[0].Rol= "Admin";
@@ -255,33 +266,44 @@ public class Proyecto_Giordan_Lizardo {
                     personal[0].IdUsuario="Admin";
                     
                     personal[0].Contraseña="Admin";
-            int i=1;
-            while(i<personal.length){
-
-                if(personal[i]== null){
+            
+            //int cont=0;;
+            
+            for(int i=1;i<personal.length;i++){
+                //System.out.println(personal[i].equals(null));
+                if(personal[i].Nombre == null){
                 
                     personal[i]=new Usuarios();
                     System.out.print("Rol : ");
-                    personal[i].Rol=lector.nextLine();
+                    personal[i].Rol=lector.next();
+                    
                     System.out.print("Nombre : ");
-                    personal[i].Nombre=lector.nextLine();
+                    personal[i].Nombre=lector.next();
+                    
                     System.out.print("Id Usuario : ");
-                    personal[i].IdUsuario=lector.nextLine();
+                    personal[i].IdUsuario=lector.next();
+                    
                     System.out.print("Contraseña : ");
-                    personal[i].Contraseña=lector.nextLine();
+                    personal[i].Contraseña=lector.next();
+                    
+                    break;
                 }
-                i++;
-            
+                
             }
-            //}
+            
+        
+        // Escritura en archivo
+        try{
+            ObjectOutputStream fichero= new ObjectOutputStream(new FileOutputStream("users.dat"));
+
             fichero.writeObject(personal);
                 
-                fichero.close();
+            fichero.close();
         }catch(Exception e){
             System.out.println("Ha ocurrido un error al crear/guardar el fichero");
         }
         
-        
+    
     }
 
     private static void MenuOpcionesProfessor(File fichero) {
@@ -332,7 +354,7 @@ public class Proyecto_Giordan_Lizardo {
         
         switch(opcion){
             case 1:
-                FicheroBinario();
+                CrearUsuario();
                 break;
             case 2:
                 ListarUsuarios();
