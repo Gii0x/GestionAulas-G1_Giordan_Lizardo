@@ -26,9 +26,9 @@ public class Proyecto_Giordan_Lizardo {
     
     public static void main(String[] args) {
 
-        
-        MenuAdmin();    
-        MenuOpcionesProfessor(fichero);
+        Login();
+        //MenuAdmin();    
+        //MenuOpcionesProfessor(fichero);
         
     }
 
@@ -372,6 +372,39 @@ public class Proyecto_Giordan_Lizardo {
 
     private static void ModificarUsuarios() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static void Login() {
+        
+        System.out.println("-----------Login---------");
+        System.out.print("    Usuario    : ");
+        String Usuario=lector.nextLine();
+        System.out.print("    Contraseña : ");
+        String Contraseña=lector.nextLine();
+        Usuarios[] personal = null;
+         try {
+            // A partir de aquí accederemos al fichero a leer mediante la variable fichero
+            ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("Users.dat"));
+
+            // Y rellenamos con lo recuperado de leer el fichero mediante readObject
+            // readObject recibe todo un array de Empleados y por eso lo casteamos (Empleado[])
+            personal = (Usuarios[]) fichero.readObject();
+
+            // Cerramos el fichero
+            fichero.close();
+
+        } catch (Exception e) {
+            System.out.println("Ha ocurrido un error al leer el fichero");
+        }
+        for (Usuarios empleado : personal) {
+            if(empleado!=null && empleado.IdUsuario.equals(Usuario)&& empleado.Contraseña.equals(Contraseña)){
+                if(empleado.Rol.equals("Admin")){
+                    MenuAdmin();
+                }else{
+                    MenuOpcionesProfessor(fichero);
+                }
+            }
+        }
     }
 
 }
