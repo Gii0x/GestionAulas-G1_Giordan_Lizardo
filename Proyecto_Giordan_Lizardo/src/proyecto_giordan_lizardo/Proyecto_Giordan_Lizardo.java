@@ -308,6 +308,8 @@ public class Proyecto_Giordan_Lizardo {
     }
 
     private static void MenuOpcionesProfessor(File fichero) {
+        boolean salir = false;
+        do {
 
         System.out.println("---------- MENÚ PROFESOR ----------");
         System.out.print("\t1. Crear un nuevo registro.\n"
@@ -338,12 +340,20 @@ public class Proyecto_Giordan_Lizardo {
             case 4:
                 ImprimirDatosFichero(fichero);
                 break;
+            case 0:
+                salir=true;
+                break;
             default:
+                
         }
+            
+        }while(!salir);
     }
 
     private static void MenuAdmin() {
         int opcion = 0;
+        boolean salir = false;
+        do {
 
         System.out.println("---------- MENÚ ADMIN ----------");
         System.out.println("¿Que acción deseas realizar?");
@@ -364,10 +374,11 @@ public class Proyecto_Giordan_Lizardo {
                 ModificarUsuarios();
                 break;
             case 0:
+                salir=true;
                 break;
-
+            default:
         }
-
+        }while(!salir);
     }
 
     private static void ListarUsuarios() {
