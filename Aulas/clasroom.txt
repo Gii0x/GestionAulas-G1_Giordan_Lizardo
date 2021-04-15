@@ -8,3 +8,4 @@ Or42,Informatica,10,Si,15,No,Si
 Or23,AsixAula,50,Si,25,No,No
 Or10,AulaASIX,17,si,17,Si,No
 Or13,Ordinadors 04,25,si,5,si,no
+Or77,AulaGore,50,Si,30,Si,Si

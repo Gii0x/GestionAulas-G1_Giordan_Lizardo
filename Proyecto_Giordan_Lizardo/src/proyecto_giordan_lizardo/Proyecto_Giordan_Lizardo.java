@@ -22,14 +22,14 @@ public class Proyecto_Giordan_Lizardo {
 
     static Scanner lector = new Scanner(System.in);
     static File fichero = new File("..\\Aulas\\clasroom.txt");
-    static int MAX=7;
-    
+    static int MAX = 7;
+
     public static void main(String[] args) {
 
-        //Login();
-        MenuAdmin();    
+        Login();
+        //MenuAdmin();    
         //MenuOpcionesProfessor(fichero);
-        
+
     }
 
     /**
@@ -117,20 +117,21 @@ public class Proyecto_Giordan_Lizardo {
             System.out.println("Ha ocurrido un error al crear/escribir en el fichero");
         }
     }
-    
-        /**
-         * Funcion encargada de eliminar una linea de registros tomando como referencia el aula.
-         * @param fichero 
-         */
-        private static void eliminarLineaFichero(File fichero) {
-            
+
+    /**
+     * Funcion encargada de eliminar una linea de registros tomando como
+     * referencia el aula.
+     *
+     * @param fichero
+     */
+    private static void eliminarLineaFichero(File fichero) {
+
         //Solicitamos el aula de la cual desea eliminar toda la linea de registro.
-        String aula="";
-        Scanner lector1 = new Scanner (System.in);
+        String aula = "";
+        Scanner lector1 = new Scanner(System.in);
         System.out.println("Indiqueme que aula desea eliminar (Or**): ");
-        aula=lector1.nextLine();
-        
-        
+        aula = lector1.nextLine();
+
         // Array para guardar todas las líneas leídas del fichero
         ArrayList<String> lineas = new ArrayList<>();
 
@@ -152,21 +153,26 @@ public class Proyecto_Giordan_Lizardo {
         // Eliminaremos el linea solicitada por el profesor utilizando el aula como referencia.
         try {
             FileWriter writer = new FileWriter(fichero);
-            
-            /**En el siguiente bucle en la cual tenemos una condición indicamos que si el split almacenado con la posición 0 es diferente al aula indicada por el profesor
-            este retornara un TRUE y realizara la escritura sobre el fichero introduciendo la linea que toque y luego dando un "Enter" (\n).
-            Si por lo contrario la condición retornase un FALSE este no imprimir la linea que le toca en el archivo y quedaria eliminada.
-            Luego devolveria el mensaje que aparece en el ELSE.
-            */
+
+            /**
+             * En el siguiente bucle en la cual tenemos una condición indicamos
+             * que si el split almacenado con la posición 0 es diferente al aula
+             * indicada por el profesor este retornara un TRUE y realizara la
+             * escritura sobre el fichero introduciendo la linea que toque y
+             * luego dando un "Enter" (\n). Si por lo contrario la condición
+             * retornase un FALSE este no imprimir la linea que le toca en el
+             * archivo y quedaria eliminada. Luego devolveria el mensaje que
+             * aparece en el ELSE.
+             */
             for (String linea : lineas) {
-                if(linea.split(",")[0].equals(aula)){
-                    System.out.println("Los registros del Aula "+aula+" han sido borrados correctamente");
-                    
-                }else if (!linea.split(",")[0].equals(aula)){
+                if (linea.split(",")[0].equals(aula)) {
+                    System.out.println("Los registros del Aula " + aula + " han sido borrados correctamente");
+
+                } else if (!linea.split(",")[0].equals(aula)) {
                     writer.write(linea + "\n");
-                    }
+                }
             }
-            
+
             writer.close();
         } catch (Exception e) {
             System.out.println("Ha ocurrido un error al abrir/sobreescribir el fichero");
@@ -178,15 +184,15 @@ public class Proyecto_Giordan_Lizardo {
         //para que no surja problemas al momento de solicitar los datos.
         Scanner lector2 = new Scanner(System.in);
         //Se crea la variable aula dentro de esta funcion.
-        String aula="";
+        String aula = "";
         //Se le indica al usurario El " codigo " de aula.
         System.out.println("Indiqueme que aula deseas modificar (Or**): ");
-        aula=lector2.nextLine(); // Se recoge los datos por teclado
+        aula = lector2.nextLine(); // Se recoge los datos por teclado
         System.out.println(aula);// Se imprime los datos ingresados por teclado
-        
+
         String[] array = new String[6];//[7]
         String[] datos = new String[6];//[7]
-        
+
         //Generamos 2 arrays uno para almacenar la respuesta del usuario
         //Y otro para imnprimir datos por pantalla.
         //datos[0] = "Aula (Or**) = ";
@@ -196,7 +202,7 @@ public class Proyecto_Giordan_Lizardo {
         datos[3] = "Numero de PCs = ";
         datos[4] = "Proyector (Si/No) = ";
         datos[5] = "Insonorización (Si/No) = ";
-        
+
         for (int i = 0, x = 0; i < array.length; i++, x++) {
             System.out.print(datos[x]);
             array[i] = lector.next();
@@ -224,8 +230,8 @@ public class Proyecto_Giordan_Lizardo {
             FileWriter writer = new FileWriter(fichero);
 
             for (String linea : lineas) {
-                if (linea.split(",")[0].equals (aula)) {
-                    writer.write(  aula+"," + array[0] + "," + array[1] + "," + array[2] + "," + array[3] + "," + array[4] + "," + array[5] + "\n");
+                if (linea.split(",")[0].equals(aula)) {
+                    writer.write(aula + "," + array[0] + "," + array[1] + "," + array[2] + "," + array[3] + "," + array[4] + "," + array[5] + "\n");
                 } else {
                     writer.write(linea + "\n");
                 }
@@ -236,74 +242,69 @@ public class Proyecto_Giordan_Lizardo {
             System.out.println("Ha ocurrido un error al abrir/sobreescribir el fichero");
         }
     }
-    
+
     /**
-     * 
+     *
      */
-    
-    public static void CrearUsuario(){
-            Usuarios[]personal=null;
-            
+    public static void CrearUsuario() {
+        Usuarios[] personal = null;
+
         // Lectura de archivo
-        try{
+        try {
             ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("users.dat"));
-            
+
             personal = (Usuarios[]) fichero.readObject();
             fichero.close();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Ha ocurrido un error al crear/guardar el fichero");
         }
-        
-        
-           
 
-                    personal[0]=new Usuarios();
-                    
-                    personal[0].Rol= "Admin";
-                    
-                    personal[0].Nombre="Admin";
-                    
-                    personal[0].IdUsuario="Admin";
-                    
-                    personal[0].Contraseña="Admin";
-            
-            //int cont=0;;
-            
-            for(int i=1;i<personal.length;i++){
-                //System.out.println(personal[i].equals(null));
-                if(personal[i].Nombre == null){
-                
-                    personal[i]=new Usuarios();
-                    System.out.print("Rol : ");
-                    personal[i].Rol=lector.next();
-                    
-                    System.out.print("Nombre : ");
-                    personal[i].Nombre=lector.next();
-                    
-                    System.out.print("Id Usuario : ");
-                    personal[i].IdUsuario=lector.next();
-                    
-                    System.out.print("Contraseña : ");
-                    personal[i].Contraseña=lector.next();
-                    
-                    break;
-                }
-                
+        personal[0] = new Usuarios();
+
+        personal[0].Rol = "Admin";
+
+        personal[0].Nombre = "Admin";
+
+        personal[0].IdUsuario = "Admin";
+
+        personal[0].Contraseña = "Admin";
+
+        //int cont=0;;
+        boolean noEncontrado = true;
+
+        for (int i = 1; (i < personal.length) && noEncontrado; i++) {
+            //System.out.println(personal[i].equals(null));
+            if (personal[i].Nombre == null) {
+
+                personal[i] = new Usuarios();
+                System.out.print("Rol : ");
+                personal[i].Rol = lector.next();
+
+                System.out.print("Nombre : ");
+                personal[i].Nombre = lector.next();
+
+                System.out.print("Id Usuario : ");
+                personal[i].IdUsuario = lector.next();
+
+                System.out.print("Contraseña : ");
+                personal[i].Contraseña = lector.next();
+
+                noEncontrado = false;
             }
-            
-        
+
+        }
+
         // Escritura en archivo
-        try{
-            ObjectOutputStream fichero= new ObjectOutputStream(new FileOutputStream("users.dat"));
+        try {
+            ObjectOutputStream fichero = new ObjectOutputStream(new FileOutputStream("users.dat"));
 
             fichero.writeObject(personal);
-                
+
             fichero.close();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Ha ocurrido un error al crear/guardar el fichero");
         }
-        
-    
+
     }
 
     private static void MenuOpcionesProfessor(File fichero) {
@@ -342,17 +343,17 @@ public class Proyecto_Giordan_Lizardo {
     }
 
     private static void MenuAdmin() {
-        int opcion=0;
-        
+        int opcion = 0;
+
         System.out.println("---------- MENÚ ADMIN ----------");
         System.out.println("¿Que acción deseas realizar?");
         System.out.println("1. Crear un usuario\n"
                 + "2.Listar\n"
                 + "3.Modificar\n"
                 + "0.Salir");
-        opcion=lector.nextInt();
-        
-        switch(opcion){
+        opcion = lector.nextInt();
+
+        switch (opcion) {
             case 1:
                 CrearUsuario();
                 break;
@@ -364,30 +365,29 @@ public class Proyecto_Giordan_Lizardo {
                 break;
             case 0:
                 break;
-            
+
         }
-        
+
     }
 
     private static void ListarUsuarios() {
-        try{
+        try {
             ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("users.dat"));
-            
-            
-            Usuarios[]personal=(Usuarios[])fichero.readObject();
-            
-            for(Usuarios empleados: personal){
-                if(empleados !=null){
-                System.out.println("Nombre : "+empleados.Nombre);
-                System.out.println("Rol : "+empleados.Rol);
-                System.out.println("ID Usuario : "+empleados.IdUsuario);
-                System.out.println("Contraseña : "+empleados.Contraseña);
-                System.out.println("--------------------------");
+
+            Usuarios[] personal = (Usuarios[]) fichero.readObject();
+
+            for (Usuarios empleados : personal) {
+                if (empleados != null) {
+                    System.out.println("Nombre : " + empleados.Nombre);
+                    System.out.println("Rol : " + empleados.Rol);
+                    System.out.println("ID Usuario : " + empleados.IdUsuario);
+                    System.out.println("Contraseña : " + empleados.Contraseña);
+                    System.out.println("--------------------------");
                 }
-           }
+            }
             // se cierra el fichero para liberar recursos
             fichero.close();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Ha ocurrido un error al abrir/leer el fichero");
         }
     }
@@ -397,36 +397,58 @@ public class Proyecto_Giordan_Lizardo {
     }
 
     private static void Login() {
-        
-        System.out.println("-----------Login---------");
-        System.out.print("    Usuario    : ");
-        String Usuario=lector.nextLine();
-        System.out.print("    Contraseña : ");
-        String Contraseña=lector.nextLine();
-        Usuarios[] personal = null;
-         try {
-            // A partir de aquí accederemos al fichero a leer mediante la variable fichero
-            ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("Users.dat"));
+        boolean salir = true;
+        char resp = ' ';
+        do {
+            System.out.println("----------Login----------");
+            System.out.print("\tUsuario    : ");
+            String Usuario = lector.next();
+            System.out.print("\tContraseña : ");
+            String Contraseña = lector.next();
+            Usuarios[] personal = null;
 
-            // Y rellenamos con lo recuperado de leer el fichero mediante readObject
-            // readObject recibe todo un array de Empleados y por eso lo casteamos (Empleado[])
-            personal = (Usuarios[]) fichero.readObject();
+            try {
+                // A partir de aquí accederemos al fichero a leer mediante la variable fichero
+                ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("Users.dat"));
 
-            // Cerramos el fichero
-            fichero.close();
+                // Y rellenamos con lo recuperado de leer el fichero mediante readObject
+                // readObject recibe todo un array de Empleados y por eso lo casteamos (Empleado[])
+                personal = (Usuarios[]) fichero.readObject();
 
-        } catch (Exception e) {
-            System.out.println("Ha ocurrido un error al leer el fichero");
-        }
-        for (Usuarios empleado : personal) {
-            if(empleado!=null && empleado.IdUsuario.equals(Usuario)&& empleado.Contraseña.equals(Contraseña)){
-                if(empleado.Rol.equals("Admin")){
-                    MenuAdmin();
-                }else{
-                    MenuOpcionesProfessor(fichero);
+                // Cerramos el fichero
+                fichero.close();
+
+            } catch (Exception e) {
+                System.out.println("Ha ocurrido un error al leer el fichero");
+            }
+
+            //for (Usuarios empleado : personal) {
+            for (int i = 0;i<personal.length;i++){
+                if (personal[i].Nombre != null && personal[i].IdUsuario.equals(Usuario) && personal[i].Contraseña.equals(Contraseña)) {
+                    
+                    if (personal[i].Rol.equals("Admin")) {
+                        MenuAdmin();
+                        salir = true;
+                        break;
+                    } else if (personal[i].Rol.equals("Professor")) {
+                        MenuOpcionesProfessor(fichero);
+                        salir = true;
+                        break;
+                    }
+                }else if (i==(personal.length-1)){
+                    System.out.println("No existe ningún usuario con ese nombre.");
                 }
             }
-        }
+            
+            System.out.println("¿Deseas continuar?(S/N): ");
+            resp = lector.next().toUpperCase().charAt(0);
+            if (resp != 'N') {
+                salir = false;
+            }else {
+                salir = true;
+            }
+
+        } while (!salir);
     }
 
 }
