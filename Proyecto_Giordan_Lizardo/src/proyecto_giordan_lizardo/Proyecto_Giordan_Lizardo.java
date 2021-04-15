@@ -27,8 +27,6 @@ public class Proyecto_Giordan_Lizardo {
     public static void main(String[] args) {
 
         Login();
-        //MenuAdmin();    
-        //MenuOpcionesProfessor(fichero);
 
     }
 
@@ -247,17 +245,8 @@ public class Proyecto_Giordan_Lizardo {
      *
      */
     public static void CrearUsuario() {
-        Usuarios[] personal = null;
-
         // Lectura de archivo
-        try {
-            ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("users.dat"));
-
-            personal = (Usuarios[]) fichero.readObject();
-            fichero.close();
-        } catch (Exception e) {
-            System.out.println("Ha ocurrido un error al crear/guardar el fichero");
-        }
+        Usuarios personal []= leerFicheroEnMemoria();
 
         personal[0] = new Usuarios();
 
@@ -269,7 +258,6 @@ public class Proyecto_Giordan_Lizardo {
 
         personal[0].Contraseña = "Admin";
 
-        //int cont=0;;
         boolean noEncontrado = true;
 
         for (int i = 1; (i < personal.length) && noEncontrado; i++) {
@@ -295,15 +283,7 @@ public class Proyecto_Giordan_Lizardo {
         }
 
         // Escritura en archivo
-        try {
-            ObjectOutputStream fichero = new ObjectOutputStream(new FileOutputStream("users.dat"));
-
-            fichero.writeObject(personal);
-
-            fichero.close();
-        } catch (Exception e) {
-            System.out.println("Ha ocurrido un error al crear/guardar el fichero");
-        }
+        guardarMemoriaEnFichero(personal);
 
     }
 
@@ -312,6 +292,7 @@ public class Proyecto_Giordan_Lizardo {
         do {
 
         System.out.println("---------- MENÚ PROFESOR ----------");
+        System.out.println("¿Que acción deseas realizar?");
         System.out.print("\t1. Crear un nuevo registro.\n"
                 + "\t2. Modificar un registro.\n"
                 + "\t3. Eliminiar un registro.\n"
@@ -357,10 +338,10 @@ public class Proyecto_Giordan_Lizardo {
 
         System.out.println("---------- MENÚ ADMIN ----------");
         System.out.println("¿Que acción deseas realizar?");
-        System.out.println("1. Crear un usuario\n"
-                + "2.Listar\n"
-                + "3.Modificar\n"
-                + "0.Salir");
+        System.out.print("\t1.Crear un usuario\n"
+                + "\t2.Listar\n"
+                + "\t3.Modificar\n"
+                + "\t0.Salir\n---->");
         opcion = lector.nextInt();
 
         switch (opcion) {
@@ -382,30 +363,54 @@ public class Proyecto_Giordan_Lizardo {
     }
 
     private static void ListarUsuarios() {
-        try {
-            ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("users.dat"));
-
-            Usuarios[] personal = (Usuarios[]) fichero.readObject();
-
-            for (Usuarios empleados : personal) {
+        Usuarios personal []= leerFicheroEnMemoria();
+        
+        for (Usuarios empleados : personal) {
                 if (empleados != null) {
-                    System.out.println("Nombre : " + empleados.Nombre);
                     System.out.println("Rol : " + empleados.Rol);
+                    System.out.println("Nombre : " + empleados.Nombre);
                     System.out.println("ID Usuario : " + empleados.IdUsuario);
                     System.out.println("Contraseña : " + empleados.Contraseña);
                     System.out.println("--------------------------");
                 }
             }
-            // se cierra el fichero para liberar recursos
-            fichero.close();
-        } catch (Exception e) {
-            System.out.println("Ha ocurrido un error al abrir/leer el fichero");
-        }
     }
 
     private static void ModificarUsuarios() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+            //Usuarios[] personal = null;
+            String IdActualiz="";
+            Usuarios personal []= leerFicheroEnMemoria();
+                    
+            System.out.print("Introduce el Id Usuario que quieres modificar: ");
+            IdActualiz = lector.next();
+            
+            boolean noEncontrado = true;
+            
+            for(int i = 0; (i<personal.length)&& noEncontrado;i++){
+                System.out.println(personal[i].Nombre);
+                if(personal[i].Nombre != null && personal[i].IdUsuario.equals(IdActualiz)){
+                    System.out.print("Rol : ");
+                    personal[i].Rol = lector.next();
+                    System.out.print("Nombre : ");
+                    personal[i].Nombre = lector.next();
+                   
+                    System.out.print("ID Usuario : ");
+                    personal[i].IdUsuario = lector.next();
+                    
+                    System.out.print("Contraseña : ");
+                    personal[i].Contraseña = lector.next();
+                    
+                    System.out.println("Registro actualizado correctamente!");
+                    noEncontrado=false;
+                }
+            }
+            if(noEncontrado){
+                System.out.println("No existe ningún usuario con el Id Usuario: "+IdActualiz);
+            }
+            
+            guardarMemoriaEnFichero(personal);
+            
+        }
 
     private static void Login() {
         boolean salir = true;
@@ -416,22 +421,9 @@ public class Proyecto_Giordan_Lizardo {
             String Usuario = lector.next();
             System.out.print("\tContraseña : ");
             String Contraseña = lector.next();
-            Usuarios[] personal = null;
+            
 
-            try {
-                // A partir de aquí accederemos al fichero a leer mediante la variable fichero
-                ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("Users.dat"));
-
-                // Y rellenamos con lo recuperado de leer el fichero mediante readObject
-                // readObject recibe todo un array de Empleados y por eso lo casteamos (Empleado[])
-                personal = (Usuarios[]) fichero.readObject();
-
-                // Cerramos el fichero
-                fichero.close();
-
-            } catch (Exception e) {
-                System.out.println("Ha ocurrido un error al leer el fichero");
-            }
+            Usuarios personal []= leerFicheroEnMemoria();
 
             //for (Usuarios empleado : personal) {
             for (int i = 0;i<personal.length;i++){
@@ -442,12 +434,13 @@ public class Proyecto_Giordan_Lizardo {
                         salir = true;
                         break;
                     } else if (personal[i].Rol.equals("Professor")) {
+                        System.out.println("Bienvenido : "+personal[i].Nombre);
                         MenuOpcionesProfessor(fichero);
                         salir = true;
                         break;
                     }
                 }else if (i==(personal.length-1)){
-                    System.out.println("No existe ningún usuario con ese nombre.");
+                    System.out.println("No existe ningún usuario con el nombre "+Usuario);
                 }
             }
             
@@ -461,5 +454,36 @@ public class Proyecto_Giordan_Lizardo {
 
         } while (!salir);
     }
+    //--------FUNCIONES PARA INTERACTUAR CON EL FICHERO BINARIO "Users.dat"--------
+    
+    private static Usuarios[] leerFicheroEnMemoria() {
+        Usuarios[] personal = null;
+        try {
+                // A partir de aquí accederemos al fichero a leer mediante la variable fichero
+                ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("Users.dat"));
 
+                // Y rellenamos con lo recuperado de leer el fichero mediante readObject
+                // readObject recibe todo un array de Empleados y por eso lo casteamos (Empleado[])
+                 personal = (Usuarios[]) fichero.readObject();
+
+                // Cerramos el fichero
+                fichero.close();
+
+            } catch (Exception e) {
+                System.out.println("Ha ocurrido un error al leer el fichero");
+            }
+        return personal;
+    }
+
+    private static void guardarMemoriaEnFichero(Usuarios[] personal) {
+        try {
+            ObjectOutputStream fichero = new ObjectOutputStream(new FileOutputStream("Users.dat"));
+
+            fichero.writeObject(personal);
+
+            fichero.close();
+        } catch (Exception e) {
+            System.out.println("Ha ocurrido un error al crear/guardar el fichero");
+        }
+    }
 }
