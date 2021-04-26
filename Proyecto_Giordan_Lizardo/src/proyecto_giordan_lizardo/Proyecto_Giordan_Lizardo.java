@@ -26,8 +26,134 @@ public class Proyecto_Giordan_Lizardo {
 
     public static void main(String[] args) {
 
+        GenerarPerfilAdmin();
         Login();
 
+    }
+    //------------------------------>>>>FUNCIONES<<<<--------------------------------------  
+
+    //--------------------------------------------------------------------------
+    //-----------------------        LOGIN        ------------------------------
+    //--------------------------------------------------------------------------
+    /**
+     * Funcion encargada de ejecutar el Login de inicio. Esta función solocitara
+     * usuario y contraseña.
+     */
+    private static void Login() {
+        boolean salir = true;
+        char resp = ' ';
+
+        do {
+            System.out.println("----------Login----------");
+            System.out.print("\tUsuario    : ");
+            String Usuario = lector.next();
+            System.out.print("\tContraseña : ");
+            String Contraseña = lector.next();
+
+            //Una vez recogidos los datos insertados por el usuario a continuación leemos el fichero binario y almacenamos en un array.
+            Usuarios personal[] = leerFicheroEnMemoria();
+
+            //A continuación realizamos un bucle en el que verificamos si los datos introducidos son validos para acceder al sistema.
+            /**
+             * El boolean "existe" lo utilizamos para determinar si el usuario
+             * indicado existe o no. En caso de no existir no * cumplira la
+             * primera condición por lo que finalizara el bucle sin realizar
+             * ninguna acción.
+             */
+            boolean existe = false;
+            for (int i = 0; i < personal.length; i++) {
+                if (personal[i].Nombre != null && personal[i].IdUsuario.equals(Usuario)) {
+                    existe = true;
+
+                    //La siguiente condición se utilizara para verificar la contraseña. 
+                    //En caso de coincidir pasara a la siguiente condición en la que se revisara el tipo de ROL.
+                    if (personal[i].Contraseña.equals(Contraseña)) {
+
+                        // Luego verificando los datos en el Array Personal comprobaremos a que Rol pertenece dicho usuario y ejecutaremos su correspondiente Menu.
+                        if (personal[i].Rol.equals("Admin")) {
+                            System.out.println("Bienvenido : " + personal[i].Nombre);
+                            MenuAdmin();
+                            salir = true;
+                            break;
+                        } else if (personal[i].Rol.equals("Professor")) {
+                            System.out.println("Bienvenido : " + personal[i].Nombre);
+                            MenuOpcionesProfessor(fichero);
+                            salir = true;
+                            break;
+                        }
+                    }
+                    // De lo contrario si la contraseña no coincide, se emitira el siguiente mensaje.
+                    System.out.println("Error contraseña incorrecta.");
+                }
+            }
+
+            // En caso de no existir el usuario indicando se ejecutara la siguiente condición e imprimar por pantalla un mensaje.
+            if (existe == false) {
+                System.out.println("No existe ningún usuario con el nombre " + Usuario);
+            }
+
+            // En la siguiente condición se solicitara si desea continuar al usuario y se almacenara la respuesta en una variable CHAR en la que sera indiferente si es en mayusculas o minusculas.
+            // Esta condición activara la salida del Do While, si así lo solicita el usuario. De lo contrario permanecera en el bucle y se retornara a false el boolean "existe" por si el usuario fallo
+            // al escribir el usuario.
+            System.out.println("¿Deseas continuar?(S/N): ");
+            resp = lector.next().toUpperCase().charAt(0);
+            if (resp != 'N') {
+                salir = false;
+                existe = false;
+            } else {
+                salir = true;
+            }
+
+        } while (!salir);
+    }
+
+    //--------------------------------------------------------------------------
+    //-----------------------      PROFESORES     ------------------------------
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Funcion encargada de ejecutar el Menu para el perfil de profesor
+     * Este menu enlaza con otras funciones acordes a lo que solicite.
+     * @param fichero 
+     */
+    
+    private static void MenuOpcionesProfessor(File fichero) {
+        boolean salir = false;
+        do {
+
+            System.out.println("---------- MENÚ PROFESOR ----------");
+            System.out.println("¿Que acción deseas realizar?");
+            System.out.print("\t1. Crear un nuevo registro.\n"
+                    + "\t2. Modificar un registro.\n"
+                    + "\t3. Eliminiar un registro.\n"
+                    + "\t4. Listar registros.\n"
+                    + "\t0. Salir \n---->");
+            int opcion = lector.nextInt();
+            switch (opcion) {
+                case 1:
+                    System.out.println("Opcion de Añadir lineas en el fichero");
+                    añadirLineasFichero(fichero);
+                    break;
+                case 2:
+                    System.out.println("Opcion de Actualizar linea en el fichero");
+                    actualizarLineaFichero(fichero);
+                    break;
+                case 3:
+
+                    System.out.println("Opcion de Eliminar lineas en el fichero");
+                    eliminarLineaFichero(fichero);
+                    break;
+                case 4:
+                    ImprimirDatosFichero(fichero);
+                    break;
+                case 0:
+                    salir = true;
+                    break;
+                default:
+
+            }
+
+        } while (!salir);
     }
 
     /**
@@ -70,18 +196,7 @@ public class Proyecto_Giordan_Lizardo {
     }
 
     /**
-     * private static void ResetearFichero(File fichero) {
-     *
-     * try { FileWriter writer = new FileWriter(fichero);
-     *
-     * writer.write("Línea 1\n"); writer.write("Línea 2\n"); writer.write("Línea
-     * 3\n");
-     *
-     * writer.close(); } catch (Exception e) { System.out.println("Ha ocurrido
-     * un error al crear/escribir en el fichero"); } }
-     */
-    /**
-     * Funcion que se encarga de añadir una linea adición al fichero clasroom
+     * Funcion que se encarga de añadir una linea adicional al fichero clasroom
      *
      * @param fichero
      */
@@ -176,7 +291,11 @@ public class Proyecto_Giordan_Lizardo {
             System.out.println("Ha ocurrido un error al abrir/sobreescribir el fichero");
         }
     }
-
+    
+    /**
+     * Funcion encargada de actualizar Linea de fichero
+     * @param fichero 
+     */
     private static void actualizarLineaFichero(File fichero) {
         // Se añadió un lector dentro de esta función 
         //para que no surja problemas al momento de solicitar los datos.
@@ -240,28 +359,57 @@ public class Proyecto_Giordan_Lizardo {
             System.out.println("Ha ocurrido un error al abrir/sobreescribir el fichero");
         }
     }
+    
+    //--------------------------------------------------------------------------
+    //----------------------      ADMINISTRADOR     ----------------------------
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Funcion que imprime por pantalla el Menu para Admin.
+     */
+    private static void MenuAdmin() {
+        int opcion = 0;
+        boolean salir = false;
+        do {
+
+            System.out.println("---------- MENÚ ADMIN ----------");
+            System.out.println("¿Que acción deseas realizar?");
+            System.out.print("\t1.Crear un usuario\n"
+                    + "\t2.Listar\n"
+                    + "\t3.Modificar\n"
+                    + "\t0.Salir\n---->");
+            opcion = lector.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    CrearUsuario();
+                    break;
+                case 2:
+                    ListarUsuarios();
+                    break;
+                case 3:
+                    ModificarUsuarios();
+                    break;
+                case 0:
+                    salir = true;
+                    break;
+                default:
+            }
+        } while (!salir);
+    }
 
     /**
-     *
+     * Funcion para crear usuarios y almacenaros en el fichero binario
+     * (Users.dat)
      */
     public static void CrearUsuario() {
-        // Lectura de archivo
-        Usuarios personal []= leerFicheroEnMemoria();
-
-        personal[0] = new Usuarios();
-
-        personal[0].Rol = "Admin";
-
-        personal[0].Nombre = "Admin";
-
-        personal[0].IdUsuario = "Admin";
-
-        personal[0].Contraseña = "Admin";
+        // A continuación llamamos a la función indicada para leer el fichero binario y almacenarlo en el Array personal []
+        Usuarios personal[] = leerFicheroEnMemoria();
 
         boolean noEncontrado = true;
-
+        //Luego con el siguiente bucle indicamos que si encuentra una posición vacia o igual a NULL está solicite datos para cada apartado.
         for (int i = 1; (i < personal.length) && noEncontrado; i++) {
-            //System.out.println(personal[i].equals(null));
+
             if (personal[i].Nombre == null) {
 
                 personal[i] = new Usuarios();
@@ -277,204 +425,143 @@ public class Proyecto_Giordan_Lizardo {
                 System.out.print("Contraseña : ");
                 personal[i].Contraseña = lector.next();
 
+                //Y alfinal dicha acción cambiamos el boolean para que rompa el bucle.
                 noEncontrado = false;
             }
 
         }
 
-        // Escritura en archivo
+        //  Guardamos los datos introducidos del array al fichero binario.
         guardarMemoriaEnFichero(personal);
 
     }
 
-    private static void MenuOpcionesProfessor(File fichero) {
-        boolean salir = false;
-        do {
-
-        System.out.println("---------- MENÚ PROFESOR ----------");
-        System.out.println("¿Que acción deseas realizar?");
-        System.out.print("\t1. Crear un nuevo registro.\n"
-                + "\t2. Modificar un registro.\n"
-                + "\t3. Eliminiar un registro.\n"
-                + "\t4. Listar registros.\n"
-                + "\t0. Salir \n---->");
-        int opcion = lector.nextInt();
-        switch (opcion) {
-            /* case 1:
-                System.out.println("Opcion de Crear un fichero");
-                ResetearFichero(fichero);
-                break;
-             */
-            case 1:
-                System.out.println("Opcion de Añadir lineas en el fichero");
-                añadirLineasFichero(fichero);
-                break;
-            case 2:
-                System.out.println("Opcion de Actualizar linea en el fichero");
-                actualizarLineaFichero(fichero);
-                break;
-            case 3:
-
-                System.out.println("Opcion de Eliminar lineas en el fichero");
-                eliminarLineaFichero(fichero);
-                break;
-            case 4:
-                ImprimirDatosFichero(fichero);
-                break;
-            case 0:
-                salir=true;
-                break;
-            default:
-                
-        }
-            
-        }while(!salir);
-    }
-
-    private static void MenuAdmin() {
-        int opcion = 0;
-        boolean salir = false;
-        do {
-
-        System.out.println("---------- MENÚ ADMIN ----------");
-        System.out.println("¿Que acción deseas realizar?");
-        System.out.print("\t1.Crear un usuario\n"
-                + "\t2.Listar\n"
-                + "\t3.Modificar\n"
-                + "\t0.Salir\n---->");
-        opcion = lector.nextInt();
-
-        switch (opcion) {
-            case 1:
-                CrearUsuario();
-                break;
-            case 2:
-                ListarUsuarios();
-                break;
-            case 3:
-                ModificarUsuarios();
-                break;
-            case 0:
-                salir=true;
-                break;
-            default:
-        }
-        }while(!salir);
-    }
-
+    /**
+     * Funcion encargada de imprimir el listado de usuarios almacenado en el
+     * fichero binario.
+     */
     private static void ListarUsuarios() {
-        Usuarios personal []= leerFicheroEnMemoria();
-        
+        //En primer lugar almacenamos los datos del fichero binario en un Array que conlleva una clase declarada. "Usuarios.java"
+        Usuarios personal[] = leerFicheroEnMemoria();
+
+        //Luego ejecutamos un bucle para imprimir todos los datos almacenados en array.
         for (Usuarios empleados : personal) {
-                if (empleados != null) {
-                    System.out.println("Rol : " + empleados.Rol);
-                    System.out.println("Nombre : " + empleados.Nombre);
-                    System.out.println("ID Usuario : " + empleados.IdUsuario);
-                    System.out.println("Contraseña : " + empleados.Contraseña);
-                    System.out.println("--------------------------");
-                }
+            if (empleados != null) {
+                System.out.println("Rol : " + empleados.Rol);
+                System.out.println("Nombre : " + empleados.Nombre);
+                System.out.println("ID Usuario : " + empleados.IdUsuario);
+                System.out.println("Contraseña : " + empleados.Contraseña);
+                System.out.println("--------------------------");
             }
+        }
     }
 
+    /**
+     * Funcion encargada de modificar los parametros de un usuario existente.
+     */
     private static void ModificarUsuarios() {
-            //Usuarios[] personal = null;
-            String IdActualiz="";
-            Usuarios personal []= leerFicheroEnMemoria();
-                    
-            System.out.print("Introduce el Id Usuario que quieres modificar: ");
-            IdActualiz = lector.next();
-            
-            boolean noEncontrado = true;
-            
-            for(int i = 0; (i<personal.length)&& noEncontrado;i++){
-                System.out.println(personal[i].Nombre);
-                if(personal[i].Nombre != null && personal[i].IdUsuario.equals(IdActualiz)){
-                    System.out.print("Rol : ");
-                    personal[i].Rol = lector.next();
-                    System.out.print("Nombre : ");
-                    personal[i].Nombre = lector.next();
-                   
-                    System.out.print("ID Usuario : ");
-                    personal[i].IdUsuario = lector.next();
-                    
-                    System.out.print("Contraseña : ");
-                    personal[i].Contraseña = lector.next();
-                    
-                    System.out.println("Registro actualizado correctamente!");
-                    noEncontrado=false;
-                }
+
+        String IdActualiz = "";
+
+        //A continuación llamamos a la función indicada para leer el fichero binario y almacenarlo en el Array personal []
+        Usuarios personal[] = leerFicheroEnMemoria();
+
+        // Solicitamos el ID del usuario que se quiere modificar.
+        System.out.print("Introduce el Id Usuario que quieres modificar: ");
+        IdActualiz = lector.next();
+
+        //Generamos un boolean para verificar si el usuario existe o no.
+        boolean noEncontrado = true;
+
+        // Este bucle se ejecutara hasta encontrar el ID indicado y una ves lo encuentre se ejecutara la siguiente condición.
+        for (int i = 0; (i < personal.length) && noEncontrado; i++) {
+
+            //En la condición solicitaremos los datos nuevos para el usuario. Y finalmente cambiaremos el boolean para que no continue el bucle.
+            if (personal[i].Nombre != null && personal[i].IdUsuario.equals(IdActualiz)) {
+                System.out.print("Rol : ");
+                personal[i].Rol = lector.next();
+                System.out.print("Nombre : ");
+                personal[i].Nombre = lector.next();
+
+                System.out.print("ID Usuario : ");
+                personal[i].IdUsuario = lector.next();
+
+                System.out.print("Contraseña : ");
+                personal[i].Contraseña = lector.next();
+
+                System.out.println("Registro actualizado correctamente!");
+                noEncontrado = false;
             }
-            if(noEncontrado){
-                System.out.println("No existe ningún usuario con el Id Usuario: "+IdActualiz);
-            }
-            
-            guardarMemoriaEnFichero(personal);
-            
+        }
+        if (noEncontrado) {
+            System.out.println("No existe ningún usuario con el Id Usuario: " + IdActualiz);
         }
 
-    private static void Login() {
-        boolean salir = true;
-        char resp = ' ';
-        do {
-            System.out.println("----------Login----------");
-            System.out.print("\tUsuario    : ");
-            String Usuario = lector.next();
-            System.out.print("\tContraseña : ");
-            String Contraseña = lector.next();
-            
+        // Como paso final almacenaremos los cambios realizados en el fichero Binario,traspasando el Array a la siguiente funcion.
+        guardarMemoriaEnFichero(personal);
 
-            Usuarios personal []= leerFicheroEnMemoria();
-
-            //for (Usuarios empleado : personal) {
-            for (int i = 0;i<personal.length;i++){
-                if (personal[i].Nombre != null && personal[i].IdUsuario.equals(Usuario) && personal[i].Contraseña.equals(Contraseña)) {
-                    
-                    if (personal[i].Rol.equals("Admin")) {
-                        MenuAdmin();
-                        salir = true;
-                        break;
-                    } else if (personal[i].Rol.equals("Professor")) {
-                        System.out.println("Bienvenido : "+personal[i].Nombre);
-                        MenuOpcionesProfessor(fichero);
-                        salir = true;
-                        break;
-                    }
-                }else if (i==(personal.length-1)){
-                    System.out.println("No existe ningún usuario con el nombre "+Usuario);
-                }
-            }
-            
-            System.out.println("¿Deseas continuar?(S/N): ");
-            resp = lector.next().toUpperCase().charAt(0);
-            if (resp != 'N') {
-                salir = false;
-            }else {
-                salir = true;
-            }
-
-        } while (!salir);
     }
-    //--------FUNCIONES PARA INTERACTUAR CON EL FICHERO BINARIO "Users.dat"--------
+
+    /**
+     * Funcion encargada de generar el perfil Admin siempre que inicie el
+     * programa.
+     */
+    private static void GenerarPerfilAdmin() {
+        //Declaramos que siempre la primera posición sea almacenada para el usuario Admin y de esta manera aun que se modifique o elimine dicho usuario
+        //se podrá volver a generar siempre que se ejecute el programa.
+
+        //Leemos el fichero binario y traspasamos los datos al Array para poder manipularlos.
+        Usuarios personal[] = leerFicheroEnMemoria();
+
+        personal[0] = new Usuarios();
+
+        personal[0].Rol = "Admin";
+
+        personal[0].Nombre = "Admin";
+
+        personal[0].IdUsuario = "Admin";
+
+        personal[0].Contraseña = "Admin";
+
+        // Guardamos los datos introducidos del array al fichero binario.
+        guardarMemoriaEnFichero(personal);
+    }
+
     
+    //--------------------------------------------------------------------------
+    //-----FUNCIONES PARA INTERACTUAR CON EL FICHERO BINARIO "Users.dat"--------
+    //--------------------------------------------------------------------------
+    /**
+     * Funcion encargada de leer el fichero en memoria y almacenarlo en
+     * Usuarios[]personal.
+     *
+     * @return
+     */
     private static Usuarios[] leerFicheroEnMemoria() {
         Usuarios[] personal = null;
         try {
-                // A partir de aquí accederemos al fichero a leer mediante la variable fichero
-                ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("Users.dat"));
+            // A partir de aquí accederemos al fichero a leer mediante la variable fichero
+            ObjectInputStream fichero = new ObjectInputStream(new FileInputStream("Users.dat"));
 
-                // Y rellenamos con lo recuperado de leer el fichero mediante readObject
-                // readObject recibe todo un array de Empleados y por eso lo casteamos (Empleado[])
-                 personal = (Usuarios[]) fichero.readObject();
+            // Y rellenamos con lo recuperado de leer el fichero mediante readObject
+            // readObject recibe todo un array de Empleados y por eso lo casteamos (Empleado[])
+            personal = (Usuarios[]) fichero.readObject();
 
-                // Cerramos el fichero
-                fichero.close();
+            // Cerramos el fichero
+            fichero.close();
 
-            } catch (Exception e) {
-                System.out.println("Ha ocurrido un error al leer el fichero");
-            }
+        } catch (Exception e) {
+            System.out.println("Ha ocurrido un error al leer el fichero");
+        }
         return personal;
     }
 
+    /**
+     * Funcion encargada de guardar los datos que teniamos en memoria
+     * "Usuarios[] personal) a fichero binario.
+     *
+     * @param personal
+     */
     private static void guardarMemoriaEnFichero(Usuarios[] personal) {
         try {
             ObjectOutputStream fichero = new ObjectOutputStream(new FileOutputStream("Users.dat"));
@@ -486,4 +573,5 @@ public class Proyecto_Giordan_Lizardo {
             System.out.println("Ha ocurrido un error al crear/guardar el fichero");
         }
     }
+
 }
