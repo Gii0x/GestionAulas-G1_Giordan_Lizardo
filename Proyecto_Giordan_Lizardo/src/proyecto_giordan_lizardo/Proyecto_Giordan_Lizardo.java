@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -28,6 +31,13 @@ public class Proyecto_Giordan_Lizardo {
 
         GenerarPerfilAdmin();
         Login();
+        //Direccion();
+        //creamos un string para almacenar datosque retornen de la funcion.
+        String dir = Direccion();
+        //imprimimo para visualizar el contenido de la funcion.
+        System.out.println(dir);
+        //almacenamos el contenido en el fichero " direccion.txt ".
+        crearFichero(dir);
 
     }
     //------------------------------>>>>FUNCIONES<<<<--------------------------------------  
@@ -573,5 +583,50 @@ public class Proyecto_Giordan_Lizardo {
             System.out.println("Ha ocurrido un error al crear/guardar el fichero");
         }
     }
-
+    public static String Direccion(){
+        
+        String x="";
+        try{
+            //String host ="ortizol.blogspot.com";
+            // Creamos un objeto de tipo Date e importamos su libreria.
+            // Este objeto nos da una información es precisa incluyendo la hora
+            Date fecha=new Date();
+            // Creamos un objeto que nos permita cambiar de 
+            // Date a string-- 00/00/0000 
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/YYYY");
+            // Cambiamos el formato de date a string usando este metodo
+            // Y así obtenemos los datos que deseamos.
+            String a=fecha.toString();// formatoFecha.format(fecha);
+        
+            // Averiguamos la direccion del host local.
+            // llamamos al objeto " InetAddress " y luego invocamos el metodo
+            // " .getLocalhost();" para optener el nombre y la IP del host
+            final InetAddress localhost =InetAddress.getLocalHost();
+            // Transformamos el valor de localhost a String para poder almacenar 
+            // y llamarlo en otra Funcion de almacen.
+            String linea = localhost.toString();
+            // Imprimimos para ver los valores que tiene cada variable
+            System.out.printf("La direccion LocalHost es %s \n",linea +"\n"
+                    + "La Fecha y Hora "+a);
+            return linea+"\n"+a+"\n";
+        }catch (Exception e){
+        }
+        return x;
+    }
+    public static void crearFichero(String dir){
+        
+        try {
+            // Codificación ISO-8859-1 (ANSI) o UTF-8 dependiendo de cómo esté creado el fichero de texto
+            // Agregamos "( , true)" para que no se cree de nuevo el fichero y almacene sucesivamente 
+            // los datos que obtenemos de la funcion DIRECCION.
+            FileWriter writer = new FileWriter(fichero, true);
+            // Escribimos los datos que teniamos almacenados en el String dir
+            // al fichero direcciones.txt
+            writer.write(dir);
+            // Cerramos el fichero para terminar de guardar los datos.
+            //writer.close();
+        } catch (Exception e) {
+            System.out.println("Ha ocurrido un error al abrir/leer el fichero");
+        }
+    }
 }
